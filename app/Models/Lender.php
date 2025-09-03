@@ -2,11 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Lender extends Model
 {
-    /** @use HasFactory<\Database\Factories\LenderFactory> */
-    use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'name',
+        'balance',
+    ];
+
+    // Relationship
+    public function offers()
+    {
+        return $this->hasMany(Offer::class, 'lender_id');
+    }
+
+    public function lender()
+    {
+        return $this->belongsTo(Lender::class, 'lender_id');
+    }
+
 }
