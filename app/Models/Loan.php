@@ -17,6 +17,11 @@ class Loan extends Model
 
 
     // Relationship
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
     public function repayments()
     {
         return $this->hasMany(Repayment::class, 'loan_id');
@@ -26,7 +31,7 @@ class Loan extends Model
     {
         return $this->belongsTo(Loan::class, 'loan_id');
     }
-    
+
     public function offer()
     {
         return $this->hasOne(Offer::class, 'loan_id');

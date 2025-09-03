@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('amount');
             $table->integer('tenor');
             $table->string('purpose');
-            $table->enum('status',['pending','approve','rejected','active','completed'])->default('pending');
+            $table->enum('status',['request','approve','rejected','active','completed'])->default('request');
             $table->timestamps();
         });
     }

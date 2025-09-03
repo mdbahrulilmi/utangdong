@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('loan_id')->constrained();
             $table->integer('amount_paid');
-            $table->integer('paid_at');
+            $table->date('paid_at');
             $table->timestamps();
         });
     }
