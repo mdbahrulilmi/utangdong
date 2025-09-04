@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Loans\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -40,8 +41,12 @@ class LoansTable
                 //
             ])
             ->recordActions([
-                ViewAction::make('view') 
-                ->label('Detail')
+                ViewAction::make(),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ]);
     }
 }

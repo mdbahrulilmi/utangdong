@@ -32,8 +32,8 @@ class Loan extends Model
         return $this->belongsTo(Loan::class, 'loan_id');
     }
 
-    public function offer()
+    public function offers()
     {
-        return $this->hasOne(Offer::class, 'loan_id');
+        return $this->hasMany(Offer::class, 'loan_id');
     }
 }
