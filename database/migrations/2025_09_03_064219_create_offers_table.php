@@ -17,8 +17,9 @@ return new class extends Migration
             $table->foreignId('lender_id')->constrained();
             $table->double('interest_rate');
             $table->integer('total_amount');
+            $table->enum('status',['offering','accepted','rejected'])->default('offering');
             $table->timestamps();
-        });
+        }); 
     }
 
     /**

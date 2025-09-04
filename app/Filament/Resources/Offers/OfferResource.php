@@ -39,12 +39,17 @@ class OfferResource extends Resource
         ];
     }
 
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('lender_id', auth()->id());
+    }
+
     public static function getPages(): array
     {
         return [
             'index' => ListOffers::route('/'),
             'create' => CreateOffer::route('/create'),
-            'edit' => EditOffer::route('/{record}/edit'),
         ];
     }
 }
