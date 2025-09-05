@@ -20,7 +20,10 @@ class OffersTable
                 TextColumn::make('interest_rate')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('total_amount')
+                TextColumn::make('amount')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('repayment_amount')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('created_at')

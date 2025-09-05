@@ -78,17 +78,24 @@ class DatabaseSeeder extends Seeder
         // Offers (10)
         // -------------------------------
         $offers = [];
-        for ($i = 1; $i <= 10; $i++) {
-            $offers[] = [
-                'loan_id' => $i,
-                'lender_id' => rand(1, 10),
-                'interest_rate' => rand(5, 15),
-                'total_amount' => rand(100000, 1000000),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        }
-        DB::table('offers')->insert($offers);
+
+for ($i = 1; $i <= 10; $i++) {
+    $amount = rand(100000, 1000000);
+    $interest = rand(5, 15);
+
+    $offers[] = [
+        'loan_id' => $i,
+        'lender_id' => rand(1, 10),
+        'interest_rate' => $interest,
+        'amount' => $amount,
+        'repayment_amount' => $amount + ($amount * $interest / 100),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ];
+}
+
+DB::table('offers')->insert($offers);
+
 
         // -------------------------------
         // Repayments (10)

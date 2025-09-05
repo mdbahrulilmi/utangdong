@@ -12,7 +12,6 @@ class Loan extends Model
         'amount',
         'tenor',
         'purpose',
-        'status',
     ];
 
 

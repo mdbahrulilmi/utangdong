@@ -25,6 +25,14 @@ class User extends Authenticatable
         'password',
     ];
 
+    // make username to lower
+    protected function username(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => strtolower($value),
+        );
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -10,7 +10,8 @@ class Offer extends Model
         'loan_id',
         'lender_id',
         'interest_rate',
-        'total_amount',
+        'amount',
+        'repayment_amount',
     ];
 
     // Relationship

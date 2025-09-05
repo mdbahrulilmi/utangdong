@@ -13,21 +13,16 @@
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
+                    
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <flux:navlist.item icon="plus-circle" :href="route('borrower.create')" :current="request()->routeIs('borrower.create')" wire:navigate>{{ __('Ajukan Pinjaman') }}</flux:navlist.item>
+                    <flux:navlist.item icon="clock" :href="route('borrower.list')" :current="request()->routeIs('borrower.list')" wire:navigate>{{ __('Riwayat Pinjaman') }}</flux:navlist.item>
+                    <flux:navlist.item icon="currency-dollar" :href="route('borrower.repayment')" :current="request()->routeIs('borrower.repayment')" wire:navigate>{{ __('Pengembalian Pinjaman') }}</flux:navlist.item>
+                    
                 </flux:navlist.group>
             </flux:navlist>
 
             <flux:spacer />
-
-            <flux:navlist variant="outline">
-                <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                {{ __('Repository') }}
-                </flux:navlist.item>
-
-                <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                {{ __('Documentation') }}
-                </flux:navlist.item>
-            </flux:navlist>
 
             <!-- Desktop User Menu -->
             <flux:dropdown class="hidden lg:block" position="bottom" align="start">
