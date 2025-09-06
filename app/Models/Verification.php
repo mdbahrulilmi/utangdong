@@ -9,4 +9,11 @@ class Verification extends Model
 {
     /** @use HasFactory<\Database\Factories\VerificationFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'nik',
+        'slip_gaji',
+        'phone_number',
+    ];
 }

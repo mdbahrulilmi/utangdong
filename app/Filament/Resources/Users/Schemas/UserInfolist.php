@@ -42,11 +42,8 @@ class UserInfolist
                         TextEntry::make('verification.phone_number')
                             ->label('Phone Number')
                             ->placeholder('—'),
-                        ImageEntry::make('verification.document')->label('Document'),
-                        ImageEntry::make('verification.selfie')->label('Selfie'),
-                        TextEntry::make('verification.message')
-                            ->label('Admin Message')
-                            ->placeholder('—'),
+                        TextEntry::make('verification.nik')->label('NIK'),
+                        TextEntry::make('verification.slip_gaji')->label('Slip Gaji'),
                     ])
                     ->columns(2),
 

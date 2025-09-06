@@ -8,8 +8,7 @@ class Lender extends Model
 {
     protected $fillable = [
         'user_id',
-        'name',
-        'balance',
+        'company',
     ];
 
     // Relationship

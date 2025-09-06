@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('verifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('selfie');
+            $table->string('nik');
+            $table->string('slip_gaji');
             $table->string('phone_number')->unique();
-            $table->string('document');
             $table->timestamps();
         });
-    }
+    } 
 
     /**
      * Reverse the migrations.

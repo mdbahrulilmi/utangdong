@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Loan;
+use App\Models\Verification;
+use App\Models\User;
 use App\Models\Offer;
 
 class BorrowerController extends Controller
@@ -116,6 +118,35 @@ public function update($offerId)
     /**
      * Remove the specified resource from storage.
      */
+    public function verify(string $id)
+    {
+        return view('borrower-verify', ['user_id'=>$id]);
+    }
+
+    public function submitVerification(Request $request)
+    {
+         $request->validate([
+            'user_id' => 'required',
+            'nik' => 'required|string|max:255',
+            'slip_gaji' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:20',
+        ]);
+        $user = User::find($request->user_id);
+        Verification::updateOrCreate(
+            [
+                'user_id' => $request->user_id,
+                'nik' => $request->nik,
+                'slip_gaji' => $request->slip_gaji,
+                'phone_number' => $request->phone_number,
+            ]
+        );
+
+        $user->status = 'request'; // update status user
+        $user->save();
+
+        return redirect()->route('dashboard')->with('message', 'Verification requested!');
+    }
+
     public function destroy(string $id)
     {
         //
