@@ -13,12 +13,15 @@ class Loan extends Model
         'tenor',
         'purpose',
         'interest_rate',
-        'total_repayment',
         'status',
         'disbursed_amount',
         'disbursed_at',
     ];
 
+    public function getRemainingAmountAttribute(): float
+    {
+        return $this->amount - $this->offers()->sum('amount');
+    }
 
     // Relationship
     public function user()

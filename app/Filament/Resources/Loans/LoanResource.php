@@ -24,6 +24,11 @@ class LoanResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role === 'lender';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return LoanForm::configure($schema);

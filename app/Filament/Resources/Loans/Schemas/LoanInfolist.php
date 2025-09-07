@@ -16,7 +16,9 @@ class LoanInfolist
 
                 Section::make('Loan Information')
                     ->schema([
-                        TextEntry::make('amount')->numeric(),
+                        TextEntry::make('amount')
+                        ->numeric()
+                        ->color('info'),
                         TextEntry::make('tenor')->numeric(),
                         TextEntry::make('interest_rate')->numeric(),
                         TextEntry::make('purpose'),
@@ -29,6 +31,12 @@ class LoanInfolist
                                 'active'    => 'success',
                                 'completed' => 'gray',
                             }),
+                        TextEntry::make('remaining_amount')
+                            ->label('Remaining Amount')
+                            ->numeric()
+                            ->formatStateUsing(fn ($state, $record) => number_format($record->remaining_amount, 0, ',', '.'))
+                            ->badge()
+                            ->color("danger"),
                         TextEntry::make('created_at')->dateTime(),
                         TextEntry::make('updated_at')->dateTime(),
                     ])
@@ -51,28 +59,18 @@ class LoanInfolist
                     ])
                     ->columns(2),
 
-                Section::make('Loan History')
+                Section::make('')
                     ->schema([
                         RepeatableEntry::make('offers')
-                            ->label('History of Offers')
+                            ->label('Riwayat Penawaran')
                             ->schema([
-                                TextEntry::make('created_at')->label('Date')->dateTime(),
-                                TextEntry::make('offer.lender_id')->label('Lender / Company'),
-                                TextEntry::make('amount_offer')->label('Amount Offer')->numeric(),
-                                TextEntry::make('status_offer')
-                                    ->label('Status')
-                                    ->badge()
-                                    ->color(fn (string $state): string => match ($state) {
-                                        'pending'  => 'warning',
-                                        'approved' => 'success',
-                                        'rejected' => 'danger',
-                                    }),
-                                TextEntry::make('reason_offer')->label('Reason')->placeholder('—'),
+                                TextEntry::make('created_at')->label('Tanggal')->dateTime(),
+                                TextEntry::make('lender_id')->label('Lender / Company'),
+                                TextEntry::make('amount')->label('Amount')->numeric(),
                             ])
-                            ->columns(5)
+                            ->columns(3)
                             ->columnSpanFull(),
-                    ])
-                    ->columnSpanFull(),
+                            ]),
             ]);
     }
 }

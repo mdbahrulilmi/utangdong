@@ -35,9 +35,19 @@ class ViewLoan extends ViewRecord
 
                 $lender = \App\Models\Lender::where('user_id', auth()->id())->first();
 
-                if ($lender->balance < $data['amount']) {
+                $totalOffered = $loan->offers()->sum('amount');
+                $remainingAmount = $loan->amount - $totalOffered;
+
+                if ($data['amount'] > $lender->balance) {
                     Notification::make()
                         ->title('Saldo Anda tidak cukup untuk membuat offer ini.')
+                        ->danger()
+                        ->send();
+                    return;
+                }
+                if ($data['amount'] > $remainingAmount) {
+                    Notification::make()
+                        ->title('Amount yang ditawarkan melebihi sisa pinjaman.')
                         ->danger()
                         ->send();
                     return;
@@ -57,11 +67,12 @@ class ViewLoan extends ViewRecord
                     'balance' => $lender->balance - $data['amount']
                 ]);
 
-                 Notification::make()
+                Notification::make()
                     ->title('Penawaran telah berhasil dibuat')
-                    ->success() 
+                    ->success()
                     ->send();
-                return;
+                return redirect(request()->header('Referer'));
+
             })
             ->modalWidth('md'),
 

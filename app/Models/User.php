@@ -78,6 +78,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Borrower::class, 'user_id');
     }
+    public function lender()
+    {
+        return $this->hasOne(Lender::class, 'user_id');
+    }
     public function verification()
     {
         return $this->hasOne(Verification::class);

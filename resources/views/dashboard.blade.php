@@ -9,10 +9,10 @@
                 <div>
                     <div class="text-lg font-medium text-red-600 mb-2">Utang Bulan Ini</div>
                     <div class="text-4xl font-bold text-gray-900 dark:text-white mb-1">
-                        Rp{{ number_format($totalActiveAmount/$tenor ?? 0) }}
+                       Rp{{ ($tenor ?? 0) > 0 ? number_format($totalActiveAmount / $tenor, 0, ',', '.') : 0 }}
                     </div>
                     <div class="text-md text-gray-700 dark:text-gray-300">Sisa utang: Rp{{ number_format($totalActiveAmount ?? 0) }}</div>
-                    <div class="mt-2 text-sm text-gray-600 dark:text-gray-400">{{ $tenor }} Bulan Sisa Tenor</div>
+                    <div class="mt-2 text-sm text-gray-600 dark:text-gray-400">{{ $tenor ?? 0 }} Bulan Sisa Tenor</div>
                 </div>
             </div>
 

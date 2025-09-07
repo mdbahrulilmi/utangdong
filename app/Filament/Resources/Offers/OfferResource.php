@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class OfferResource extends Resource
 {
@@ -23,6 +24,22 @@ class OfferResource extends Resource
     protected static ?string $recordTitleAttribute = 'offer';
 
     protected static ?int $navigationSort = 3;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role === 'lender';
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        
+        if (auth()->user()->lender) {
+            $query->where('lender_id', auth()->user()->lender->id);
+        }
+        
+        return $query;
+    }
 
     public static function form(Schema $schema): Schema
     {

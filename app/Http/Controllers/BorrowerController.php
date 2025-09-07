@@ -20,7 +20,7 @@ class BorrowerController extends Controller
             ->flatMap(fn($loan) => $loan->offers)
             ->sum('repayment_amount');
 
-        $tenor = $activeLoans->first()->tenor;
+        $tenor = $activeLoans->first()->tenor ?? 0;
 
         $creditScore = auth()->user()->borrower->credit_score ?? 0;
         $gradeSetting = \App\Models\Settings::where('min_score', '<=', $creditScore)
@@ -76,19 +76,12 @@ class BorrowerController extends Controller
         $amount = $request->amount;
         $tenor = $request->tenor;
 
-        $numerator = $amount * $monthlyRate * pow(1 + $monthlyRate, $tenor);
-        $denominator = pow(1 + $monthlyRate, $tenor) - 1;
-        $monthlyPayment = $denominator > 0 ? $numerator / $denominator : $amount;
-
-        $totalRepayment = $monthlyPayment * $tenor;
-
         Loan::create([
             'user_id' => auth()->id(),
             'amount' => $amount,
             'tenor' => $tenor,
             'purpose' => $request->purpose,
             'interest_rate' => $gradeSetting->interest_rate,
-            'total_repayment' => $totalRepayment,
             'status' => 'requested',
         ]);
 

@@ -5,7 +5,9 @@ namespace App\Filament\Resources\Offers\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class OffersTable
 {
@@ -50,7 +52,6 @@ class OffersTable
                     ->getStateUsing(function ($record) {
                         $loan = $record->loan;
                         if (!$loan) return '-';
-                        // asumsi belum ada pembayaran
                         return $loan->tenor . ' bulan';
                     })
                     ->sortable(),
@@ -66,7 +67,7 @@ class OffersTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                // 
             ])
             ->recordActions([
                 //
