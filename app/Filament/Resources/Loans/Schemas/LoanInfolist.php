@@ -18,11 +18,12 @@ class LoanInfolist
                     ->schema([
                         TextEntry::make('amount')->numeric(),
                         TextEntry::make('tenor')->numeric(),
+                        TextEntry::make('interest_rate')->numeric(),
                         TextEntry::make('purpose'),
                         TextEntry::make('status')
                             ->badge()
                             ->color(fn (string $state): string => match ($state) {
-                                'request'   => 'warning',
+                                'requested'   => 'warning',
                                 'approve'   => 'info',
                                 'rejected'  => 'danger',
                                 'active'    => 'success',

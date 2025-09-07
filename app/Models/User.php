@@ -76,7 +76,7 @@ class User extends Authenticatable
 
     public function borrower()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasOne(Borrower::class, 'user_id');
     }
     public function verification()
     {

@@ -36,7 +36,7 @@ class UsersTable
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'unverified' => 'gray',
-                        'request'    => 'warning',
+                        'requested'    => 'warning',
                         'verified'   => 'success',
                         'rejected'   => 'danger',
                     }),

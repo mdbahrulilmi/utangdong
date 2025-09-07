@@ -17,7 +17,11 @@ class EnsureUserIsAdmin
     {
         $user = $request->user();
 
-        if (!$user || $user->role !== 'lender' || $user->role !== 'admin') {
+        if(!$user){
+            return redirect('login');
+        }
+            
+        if ($user->role !== 'lender' && $user->role !== 'admin') {
             abort(403);
         }
 

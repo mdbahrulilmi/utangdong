@@ -8,9 +8,28 @@ use App\Models\Loan;
 use App\Models\Verification;
 use App\Models\User;
 use App\Models\Offer;
+use App\Models\Settings;
 
 class BorrowerController extends Controller
 {
+    public function dashboard()
+    {
+        $activeLoans = auth()->user()->loans->filter(fn($loan) => $loan->status === 'active');
+
+        $totalActiveAmount = $activeLoans
+            ->flatMap(fn($loan) => $loan->offers)
+            ->sum('repayment_amount');
+
+        $tenor = $activeLoans->first()->tenor;
+
+        $creditScore = auth()->user()->borrower->credit_score ?? 0;
+        $gradeSetting = \App\Models\Settings::where('min_score', '<=', $creditScore)
+                        ->where('max_score', '>=', $creditScore)
+                        ->first();
+        $maxLimit = $gradeSetting ? $gradeSetting->max_loan_amount : 0;
+        return view('dashboard', ['maxLimit'=>$maxLimit, 'totalActiveAmount'=> $totalActiveAmount, 'tenor'=>$tenor]);
+    }
+
     public function index()
     {
         $loans = Loan::where('user_id', auth()->id())
@@ -25,7 +44,15 @@ class BorrowerController extends Controller
      */
     public function create()
     {
-        return view('borrower-create');
+        $creditScore = auth()->user()->borrower->credit_score ?? 0;
+        $gradeSetting = \App\Models\Settings::where('min_score', '<=', $creditScore)
+                        ->where('max_score', '>=', $creditScore)
+                        ->first();
+        if (!$gradeSetting) {
+            abort(404, 'Grade setting not found for your credit score.');
+        }
+
+        return view('borrower-create', compact('gradeSetting'));
     }
 
     /**
@@ -34,23 +61,38 @@ class BorrowerController extends Controller
     public function store(Request $request)
     {
        try {
-            $validated = $request->validate([
-                'amount'  => 'required|numeric|min:100000',
-                'tenor'   => 'required|integer|min:6',
-                'purpose' => 'required|string|max:255',
-            ]);
+        $creditScore = auth()->user()->borrower->credit_score ?? 0;
+        $gradeSetting = \App\Models\Settings::where('min_score', '<=', $creditScore)
+                        ->where('max_score', '>=', $creditScore)
+                        ->first();
 
-            Loan::create([
-                'user_id' => auth()->id(),
-                'amount'  => $validated['amount'],
-                'tenor'   => $validated['tenor'],
-                'purpose' => $validated['purpose'],
-                'status'  => 'pending', // default status
-            ]);
+        $request->validate([
+            'amount' => "required|numeric|min:100000|max:{$gradeSetting->max_loan_amount}",
+            'tenor'  => "required|integer|min:1|max:{$gradeSetting->max_tenor_months}",
+            'purpose'=> 'required|string|max:1000',
+        ]);
 
-            return redirect()
-                ->route('borrower.list')
-                ->with('success', 'Pengajuan pinjaman berhasil, menunggu persetujuan.');
+        $monthlyRate = $gradeSetting->interest_rate / 100 / 12;
+        $amount = $request->amount;
+        $tenor = $request->tenor;
+
+        $numerator = $amount * $monthlyRate * pow(1 + $monthlyRate, $tenor);
+        $denominator = pow(1 + $monthlyRate, $tenor) - 1;
+        $monthlyPayment = $denominator > 0 ? $numerator / $denominator : $amount;
+
+        $totalRepayment = $monthlyPayment * $tenor;
+
+        Loan::create([
+            'user_id' => auth()->id(),
+            'amount' => $amount,
+            'tenor' => $tenor,
+            'purpose' => $request->purpose,
+            'interest_rate' => $gradeSetting->interest_rate,
+            'total_repayment' => $totalRepayment,
+            'status' => 'requested',
+        ]);
+
+        return redirect()->route('borrower.list')->with('success', 'Loan application submitted!');
         } catch (\Exception $e) {
             return redirect()
                 ->back()
@@ -77,26 +119,22 @@ public function update($offerId)
         $approvedOffer = Offer::with('loan')->findOrFail($offerId);
         $loan = $approvedOffer->loan;
 
-        // Approve offer ini
         $approvedOffer->status = 'accepted';
         $approvedOffer->save();
 
-        // Hitung sisa loan yang belum funded
         $totalAccepted = Offer::where('loan_id', $loan->id)
                             ->where('status', 'accepted')
                             ->sum('repayment_amount');
 
         $remaining = $loan->amount - $totalAccepted;
 
-        // Ambil semua pending offer
         $pendingOffers = Offer::where('loan_id', $loan->id)
                             ->where('status', 'offering')
-                            ->orderBy('created_at') // optional: urut lama dulu
+                            ->orderBy('created_at')
                             ->get();
 
         foreach ($pendingOffers as $pendingOffer) {
             if ($remaining <= 0) {
-                // Tidak ada sisa, offer otomatis jadi 0
                 $pendingOffer->repayment_amount = 0;
                 $pendingOffer->save();
                 continue;
@@ -132,6 +170,7 @@ public function update($offerId)
             'phone_number' => 'required|string|max:20',
         ]);
         $user = User::find($request->user_id);
+        
         Verification::updateOrCreate(
             [
                 'user_id' => $request->user_id,
@@ -140,15 +179,21 @@ public function update($offerId)
                 'phone_number' => $request->phone_number,
             ]
         );
-
-        $user->status = 'request'; // update status user
+        $user->status = 'requested';
         $user->save();
 
         return redirect()->route('dashboard')->with('message', 'Verification requested!');
     }
 
-    public function destroy(string $id)
+    public function disbursed(Request $request, $id)
     {
-        //
+        $loan = Loan::find($id);
+        $loan->update([
+            'status' => 'active',
+            // 'disbursed_amount' => $request->netAmount,
+            // 'disbursed_at' => now(),
+        ]);
+
+        return redirect()->route('dashboard')->with('message', 'Verification requested!');
     }
 }

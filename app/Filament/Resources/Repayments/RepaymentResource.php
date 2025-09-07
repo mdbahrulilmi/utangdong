@@ -18,9 +18,16 @@ class RepaymentResource extends Resource
 {
     protected static ?string $model = Repayment::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::CurrencyDollar;
 
     protected static ?string $recordTitleAttribute = 'repayment';
+
+    protected static ?int $navigationSort = 4;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role === 'lender';
+    }
 
     public static function form(Schema $schema): Schema
     {

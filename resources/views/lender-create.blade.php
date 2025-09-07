@@ -16,9 +16,9 @@
 
             <!-- company -->
             <div class="flex flex-col">
-                <label class="font-medium mb-1 text-gray-700 dark:text-gray-200">Company</label>
-                <input type="text" name="company" class="border border-gray-300 dark:border-gray-600 rounded px-3 py-2 bg-gray-50 dark:bg-gray-700" placeholder="Masukkan company">
-                @error('company') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
+                <label class="font-medium mb-1 text-gray-700 dark:text-gray-200">Topup Saldo</label>
+                <input type="text" name="balance" class="border border-gray-300 dark:border-gray-600 rounded px-3 py-2 bg-gray-50 dark:bg-gray-700" placeholder="Masukkan saldo">
+                @error('balance') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
             </div>
 
             <!-- Submit -->

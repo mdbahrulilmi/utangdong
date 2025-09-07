@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role',['borrower','lender','admin'])->default('borrower');
-            $table->enum('status',['unverified','request','verified','rejected'])->default('unverified');
+            $table->enum('status',['unverified','requested','verified','rejected'])->default('unverified');
             $table->rememberToken();
             $table->timestamps();
         });

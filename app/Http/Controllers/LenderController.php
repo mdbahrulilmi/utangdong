@@ -21,15 +21,17 @@ class LenderController extends Controller
      */
     public function store(Request $request)
     {
-         $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'company' => 'required|string|max:255',
+        $user = User::find(auth()->id());
+
+        $request->validate([
+            'balance' => 'required',
         ]);
 
         Lender::updateOrCreate(
             [
-                'user_id' => $request->user_id,
-                'company' => $request->company,
+                'user_id' => $user->id,
+                'company' => $user->username,
+                'balance' => $request->balance,
             ]
         );
 

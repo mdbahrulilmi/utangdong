@@ -30,7 +30,7 @@ class UserInfolist
                             ->badge()
                             ->color(fn (string $state): string => match ($state) {
                                 'unverified' => 'gray',
-                                'request'    => 'warning',
+                                'requested'    => 'warning',
                                 'verified'   => 'success',
                                 'rejected'   => 'danger',
                             }),
@@ -44,6 +44,7 @@ class UserInfolist
                             ->placeholder('—'),
                         TextEntry::make('verification.nik')->label('NIK'),
                         TextEntry::make('verification.slip_gaji')->label('Slip Gaji'),
+                        TextEntry::make('borrower.credit_score')->label('Credit Score'),
                     ])
                     ->columns(2),
 

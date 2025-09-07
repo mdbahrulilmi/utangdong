@@ -12,6 +12,11 @@ class Loan extends Model
         'amount',
         'tenor',
         'purpose',
+        'interest_rate',
+        'total_repayment',
+        'status',
+        'disbursed_amount',
+        'disbursed_at',
     ];
 
 

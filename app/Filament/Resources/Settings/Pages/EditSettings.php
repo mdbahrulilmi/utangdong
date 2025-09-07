@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\Offers\Pages;
+namespace App\Filament\Resources\Settings\Pages;
 
-use App\Filament\Resources\Offers\OfferResource;
+use App\Filament\Resources\Settings\SettingsResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
-class EditOffer extends EditRecord
+class EditSettings extends EditRecord
 {
-    protected static string $resource = OfferResource::class;
+    protected static string $resource = SettingsResource::class;
 
     protected function getHeaderActions(): array
     {

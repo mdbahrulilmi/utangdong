@@ -7,6 +7,7 @@ use Filament\Resources\Pages\ViewRecord;
 use Filament\Actions;
 use Filament\Forms;
 use App\Models\Verification;
+use App\Models\Borrower;
 
 class ViewUser extends ViewRecord
 {
@@ -22,6 +23,23 @@ class ViewUser extends ViewRecord
                     $record->status = 'verified';
                     $record->save();
 
+                    $gaji = $record->verification->slip_gaji;
+                    if ($gaji > 10000000) {
+                        $score = 100;
+                    } else if ($gaji > 7000000) {
+                        $score = 80;
+                    } else if ($gaji > 4000000) {
+                        $score = 70;
+                    } else {
+                        $score = 40;
+                    }
+
+                    Borrower::updateOrCreate(
+                    [
+                        'user_id' => $record->id,
+                        'credit_score' => $score,
+                    ]
+                );
                     if ($record->verification) {
                         $record->verification->update([
                             'status' => 'verified',

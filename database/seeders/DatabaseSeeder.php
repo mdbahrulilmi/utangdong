@@ -26,90 +26,88 @@ class DatabaseSeeder extends Seeder
             'password' => '1',
             'role'=> 'admin'
         ]);
+        User::factory()->create([
+            'name' => 'Borrower1',
+            'username' => 'Borrower1',
+            'email' => 'b@1',
+            'password' => '1',
+            'role'=> 'borrower',
+        ]);
+        User::factory()->create([
+            'name' => 'Borrower2',
+            'username' => 'Borrower2',
+            'email' => 'b@2',
+            'password' => '2',
+            'role'=> 'borrower',
+        ]);
 
-//         $users = [];
-//         for ($i = 1; $i <= 10; $i++) {
-//             $users[] = [
-//                 'name' => "User $i",
-//                 'username'=> "user". Str::random(6),
-//                 'email' => "user$i@example.com",
-//                 'password' => Hash::make('password'),
-//                 'role' => $i <= 2 ? 'borrower' : 'lender',
-//                 'status' => 'unverified',
-//                 'created_at' => now(),
-//                 'updated_at' => now(),
-//             ];
-//         }
-//         DB::table('users')->insert($users);
-
-//         // -------------------------------
-//         // Lenders (10)
-//         // -------------------------------
-//         $lenders = [];
-//         for ($i = 1; $i <= 10; $i++) {
-//             $lenders[] = [
-//                 'user_id' => $i,
-//                 'company' => "Company $i",
-//                 'balance' => rand(5000000, 20000000),
-//                 'created_at' => now(),
-//                 'updated_at' => now(),
-//             ];
-//         }
-//         DB::table('lenders')->insert($lenders);
-
-//         // -------------------------------
-//         // Loans (10)
-//         // -------------------------------
-//         $loans = [];
-//         for ($i = 1; $i <= 10; $i++) {
-//             $loans[] = [
-//                 'user_id' => $i,
-//                 'amount' => rand(100000, 1000000),
-//                 'tenor' => rand(1, 12),
-//                 'purpose' => "Purpose of loan $i",
-//                 'status' => 'request',
-//                 'created_at' => now(),
-//                 'updated_at' => now(),
-//             ];
-//         }
-//         DB::table('loans')->insert($loans);
-
-//         // -------------------------------
-//         // Offers (10)
-//         // -------------------------------
-//         $offers = [];
-
-// for ($i = 1; $i <= 10; $i++) {
-//     $amount = rand(100000, 1000000);
-//     $interest = rand(5, 15);
-
-//     $offers[] = [
-//         'loan_id' => $i,
-//         'lender_id' => rand(1, 10),
-//         'interest_rate' => $interest,
-//         'amount' => $amount,
-//         'repayment_amount' => $amount + ($amount * $interest / 100),
-//         'created_at' => now(),
-//         'updated_at' => now(),
-//     ];
-// }
-
-// DB::table('offers')->insert($offers);
-
-
-//         // -------------------------------
-//         // Repayments (10)
-//         // -------------------------------
-//         $repayments = [];
-//         for ($i = 1; $i <= 10; $i++) {
-//             $repayments[] = [
-//                 'loan_id' => $i,
-//                 'amount_paid' => rand(50000, 100000),
-//                 'paid_at' => now(),
-//                 'created_at' => now(),
-//                 'updated_at' => now(),
-//             ];
-//         }
-//         DB::table('repayments')->insert($repayments);
+        DB::table('settings')->insert([
+        [
+            'grade' => 'A',
+            'min_score' => 90,
+            'max_score' => 100,
+            'interest_rate' => 10.00,
+            'late_fee_rate' => 2.00,
+            'max_tenor_months' => 36,
+            'max_loan_amount' => 10000000,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'grade' => 'B',
+            'min_score' => 80,
+            'max_score' => 89,
+            'interest_rate' => 12.00,
+            'late_fee_rate' => 3.00,
+            'max_tenor_months' => 36,
+            'max_loan_amount' => 8000000,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'grade' => 'C',
+            'min_score' => 70,
+            'max_score' => 79,
+            'interest_rate' => 14.00,
+            'late_fee_rate' => 4.00,
+            'max_tenor_months' => 36,
+            'max_loan_amount' => 6000000,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'grade' => 'D',
+            'min_score' => 40,
+            'max_score' => 69,
+            'interest_rate' => 16.00,
+            'late_fee_rate' => 5.00,
+            'max_tenor_months' => 24,
+            'max_loan_amount' => 3000000,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'grade' => 'E',
+            'min_score' => 1,
+            'max_score' => 39,
+            'interest_rate' => 18.00,
+            'late_fee_rate' => 6.00,
+            'max_tenor_months' => 12,
+            'max_loan_amount' => 1000000,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'grade' => 'F',
+            'min_score' => 0,
+            'max_score' => 0,
+            'interest_rate' => 0.00,
+            'late_fee_rate' => 0.00,
+            'max_tenor_months' => 0,
+            'max_loan_amount' => 0,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+    ]);
     }
 }
