@@ -125,8 +125,8 @@ Dashboard menampilkan opsi pinjaman setelah status borrower diverifikasi.
 
 Borrower juga dapat melakukan **withdraw** dan melihat **history transaksi**.  
 
-![Borrower Loan History](./public/images/user-history.png)
-![Borrower Loan History](./public/images/withdraw.png)
+![Borrower Loan History](./public/images/user_history.png)
+![Borrower Withdraw](./public/images/withdraw.png)
 
 ---
 
@@ -182,5 +182,3 @@ Pantau daftar user, loan, offer
 ![Admin Dashboard](./public/images/admin_dashboard.png)
 
 ---
-
-## 5. 📂 Struktur Gambar Dokumentasi
