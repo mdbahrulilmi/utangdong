@@ -51,11 +51,6 @@ class ViewUser extends ViewRecord
             Actions\Action::make('reject')
                 ->label('Reject')
                 ->color('danger')
-                ->form([
-                    Forms\Components\Textarea::make('message')
-                        ->label('Reason')
-                        ->required(),
-                ])
                 ->action(function ($record, array $data) {
                     $record->status = 'rejected';
                     $record->save();
@@ -63,7 +58,6 @@ class ViewUser extends ViewRecord
                     if ($record->verification) {
                         $record->verification->update([
                             'status' => 'rejected',
-                            'message' => $data['message'],
                         ]);
                     }
                 }),

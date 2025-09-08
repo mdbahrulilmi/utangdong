@@ -1,36 +1,65 @@
-# UtangDong - Prototype Platform Pinjaman Online
+# Dokumentasi Developer – UtangDong
 
-## 1. Penjelasan Singkat Aplikasi
+## 1. Overview
+**Nama Aplikasi:** UtangDong  
+**Tipe:** Marketplace Pinjamans  
+**Stack:**  
+- Backend: Laravel  
+- Admin Panel: Filament  
+- Database: MySQL / MariaDB  
 
-**UtangDong** adalah prototype platform pinjaman online sederhana (loan marketplace) yang memungkinkan:
+**Tujuan:**  
+Memfasilitasi peminjaman uang antara borrower (peminjam) dan lender (pemberi pinjaman), dengan admin yang mengatur verifikasi dan grade bunga.  
 
-- **Borrower**: 
-  - Registrasi/Login
-  - Submit aplikasi pinjaman (jumlah, tenor, tujuan)
-  - Melihat status aplikasi atau penawaran dari lender (dummy data)
-- **Lender/Admin**:
-  - Login ke dashboard Filament
-  - Melihat daftar aplikasi pinjaman masuk
-  - Approve / Reject aplikasi pinjaman
-  - Melihat pengembalian pinjaman (repayment)
-
-**Alur MVP**:  
-Borrower registrasi/login → isi form pengajuan pinjaman (jumlah, tenor, tujuan) → submit aplikasi → status pending → lender/admin login dashboard Filament → lihat daftar aplikasi → approve/reject → status aplikasi diperbarui → borrower melihat status atau penawaran dummy → jika disetujui, borrower melakukan repayment → status aplikasi menjadi completed → lender/admin memantau pembayaran. 
-
----
-
-## 2. Diagram Flow Aplikasi
-
-![Flow Diagram](public/images/utangdong-flow.png)
-
-> Diagram ini menunjukkan alur utama antara Borrower dan Lender/Admin dalam MVP UtangDong.
+**Roles:**  
+- **Borrower (User):** Mengajukan pinjaman  
+- **Lender:** Memberikan pinjaman ke borrower  
+- **Admin:** Mengatur verifikasi, menentukan grade bunga, mengelola sistem  
 
 ---
 
-## 3. Diagram ERD
+## 2. Fitur Utama
+### Borrower
+- Registrasi dan login  
+- Mengajukan pinjaman (loan request)  
+- Melihat status pinjaman  
 
-![ERD Diagram](public/images/utangdong-ERD.png)
+### Lender
+- Registrasi dan login  
+- Melihat daftar pinjaman yang bisa didanai  
+- Memberikan pinjaman melalui *offer*  
+- Melacak dana yang tersedia dan digunakan  
 
-> Diagram ERD ini menunjukkan struktur database 5 tabel utama: `users`, `lenders`, `loan_applications`, `offers`, `repayments`, beserta relasinya.
+### Admin
+- Verifikasi borrower (dokumen NIK, slip gaji, nomor HP)  
+- Menetapkan grade dan interest rate berdasarkan score  
+- Mengatur pengaturan sistem (bunga, tenor maksimal, limit pinjaman)  
 
 ---
+
+## 3. ERD
+![ERD](public/images/erd.png)
+---
+
+## 4. Alur Sistem
+1. **Borrower**  
+   - Registrasi → Lengkapi verifikasi → Ajukan pinjaman → Tunggu penawaran → Withdraw 
+  
+  ![Flow Borrower](public/images/flow-borrower.png)
+
+
+2. **Lender**  
+   - Registrasi → Tambah saldo → Lihat daftar pinjaman → Buat tawaran → Masukan Tawaran → Tawaran Aktif  
+
+   ![Flow Lender](public/images/flow-lender.png)
+
+3. **Admin**  
+   - Verifikasi borrower → Tentukan grade, interest rate, max limit, and max tenor
+
+   ![Flow Admin](public/images/flow-admin.png)
+
+---
+
+## 5. Instalasi & Setup
+  composer install
+  npm install && npm run build

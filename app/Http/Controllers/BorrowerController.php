@@ -48,7 +48,8 @@ class BorrowerController extends Controller
         $gradeSetting = \App\Models\Settings::where('min_score', '<=', $creditScore)
                         ->where('max_score', '>=', $creditScore)
                         ->first();
-        if (!$gradeSetting) {
+        $verification = auth()->user()->status;
+        if (!$gradeSetting || $verification !== "verified") {
             abort(404, 'Grade setting not found for your credit score.');
         }
 
@@ -163,15 +164,15 @@ public function update($offerId)
             'phone_number' => 'required|string|max:20',
         ]);
         $user = User::find($request->user_id);
-        
         Verification::updateOrCreate(
+            ['user_id' => $request->user_id],
             [
-                'user_id' => $request->user_id,
                 'nik' => $request->nik,
                 'slip_gaji' => $request->slip_gaji,
                 'phone_number' => $request->phone_number,
             ]
         );
+
         $user->status = 'requested';
         $user->save();
 
@@ -183,8 +184,8 @@ public function update($offerId)
         $loan = Loan::find($id);
         $loan->update([
             'status' => 'active',
-            // 'disbursed_amount' => $request->netAmount,
-            // 'disbursed_at' => now(),
+            'disbursed_amount' => $request->disbursed_amount,
+            'disbursed_at' => now(),
         ]);
 
         return redirect()->route('dashboard')->with('message', 'Verification requested!');

@@ -43,7 +43,14 @@
                 <div>
                     <div class="text-lg font-medium text-green-600 mb-2">Status Akunmu</div>
                     <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">
-                        {{ auth()->user()->status === 'verified' ? 'Terverifikasi' : (auth()->user()->status === 'requested' ? 'Lagi diajukan' : 'Belum Terverifikasi') }}
+                        {{ auth()->user()->status === 'verified' 
+                            ? 'Terverifikasi' 
+                            : (auth()->user()->status === 'requested' 
+                                ? 'Lagi diajukan' 
+                                : (auth()->user()->status === 'rejected' 
+                                    ? 'Ditolak' 
+                                    : 'Belum Terverifikasi')) }}
+
 
                     </div>
                     <div class="text-sm text-gray-600 dark:text-gray-400 mb-4">
