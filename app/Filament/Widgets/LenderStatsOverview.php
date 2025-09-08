@@ -16,7 +16,7 @@ class LenderStatsOverview extends StatsOverviewWidget
     
     protected function getColumns(): int
     {
-        return 2; // 2 kolom grid
+        return 2;
     }
 
     protected function getStats(): array
