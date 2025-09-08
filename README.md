@@ -85,7 +85,7 @@ php artisan serve
 # 📖 Dokumentasi Penggunaan – UtangDong
 
 ## 1. 🔑 Login & Registrasi
-- **Borrower** dan **Lender** bisa daftar lewat halaman registrasi.  
+- **User** bisa daftar lewat halaman registrasi.  
 - **Admin** akun dibuat manual via seeder atau database.  
 
 ![Home](./public/images/welcome.png)  
@@ -96,7 +96,7 @@ php artisan serve
 
 ## 2. 👤 Borrower Flow
 ### 2.1 Dashboard Awal
-Setelah login, borrower masuk ke dashboard awal.  
+Setelah login, user masuk ke dashboard awal.  
 
 ![Borrower Dashboard Unverified](./public/images/user_dashboard.png)
 
@@ -133,7 +133,7 @@ Borrower juga dapat melakukan **withdraw** dan melihat **history transaksi**.
 ## 3. 💰 Lender Flow
 
 ### 3.1 Daftar Saldo (Top Up Pertama)
-- Setelah login sebagai lender, langkah pertama adalah **mendaftarkan saldo**.  
+- Setelah login sebagai user, langkah pertama adalah **mendaftarkan lendeer dengan topup saldo**.  
 - Tanpa saldo, lender tidak bisa mengakses fitur pendanaan.  
 
 ![Lender Topup First](./public/images/lender_saldo.png)
