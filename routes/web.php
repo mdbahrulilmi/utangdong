@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BorrowerController;
 use App\Http\Controllers\LenderController;
 use App\Http\Middleware\EnsureUserIsBorrower;
+use App\Http\Middleware\isVerified;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+        Route::get('/', function () {
+            return view('welcome');
+        })->name('home');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -24,14 +25,16 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth',EnsureUserIsBorrower::class])->group(function () {
     Route::get('/dashboard', [BorrowerController::class, 'dashboard'])->name('dashboard');
     Route::prefix('borrower')->group(function(){
-        Route::get('/create', [BorrowerController::class, 'create'])->name('borrower.create');
-        Route::get('/list', [BorrowerController::class, 'index'])->name('borrower.list');
-        Route::get('/show/{loan}', [BorrowerController::class, 'show'])->name('borrower.show');
-        Route::post('/store', [BorrowerController::class, 'store'])->name('borrower.store');
-        Route::patch('/disbursed/{id}', [BorrowerController::class, 'disbursed'])->name('borrower.disbursed');
+        Route::middleware(isVerified::class)->group(function(){
+            Route::get('/create', [BorrowerController::class, 'create'])->name('borrower.create');
+            Route::get('/list', [BorrowerController::class, 'index'])->middleware(isVerified::class)->name('borrower.list');
+            Route::get('/show/{loan}', [BorrowerController::class, 'show'])->name('borrower.show');
+            Route::post('/store', [BorrowerController::class, 'store'])->name('borrower.store');
+            Route::patch('/disbursed/{id}', [BorrowerController::class, 'disbursed'])->name('borrower.disbursed');
+            Route::get('/repayment', [BorrowerController::class, 'index'])->name('borrower.repayment');
+        });
         Route::get('/verification/{id}', [BorrowerController::class, 'verify'])->name('borrower.verification');
         Route::post('/verification', [BorrowerController::class, 'submitVerification'])->name('borrower.verification.submit');
-        // Route::get('/repayment', [BorrowerController::class, 'index'])->name('borrower.repayment');
     });
     Route::prefix('lender')->group(function(){
         Route::get('/create/{id}', [LenderController::class, 'create'])->name('lender.create');
