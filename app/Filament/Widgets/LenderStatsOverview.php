@@ -23,7 +23,6 @@ class LenderStatsOverview extends StatsOverviewWidget
     {
         $lender = Lender::where('user_id',auth()->id())->first();
 
-        // Saldo lender
         $balance = $lender->balance ?? 0;
 
         $totalOffers = Offer::where('lender_id', $lender->id)->count();
@@ -38,7 +37,6 @@ class LenderStatsOverview extends StatsOverviewWidget
                 $loan = $offer->loan;
                 if (!$loan) return 0;
 
-                // estimasi per bulan: total repayment / tenor
                 return $offer->repayment_amount / max($loan->tenor, 1);
             });
 

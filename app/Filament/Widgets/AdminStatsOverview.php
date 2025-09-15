@@ -11,13 +11,11 @@ use App\Models\Offer;
 class AdminStatsOverview extends StatsOverviewWidget
 {
     protected function getStats(): array
-    {
-        // Simple queries to avoid errors
+    {   
         $totalUsers = User::count() ?? 0;
         $totalLoans = Loan::count() ?? 0;
         $totalOffers = Offer::count() ?? 0;
         
-        // Simple status counts
         $pendingLoans = Loan::where('status', 'pending')->count() ?? 0;
         $approvedLoans = Loan::where('status', 'approved')->count() ?? 0;
         

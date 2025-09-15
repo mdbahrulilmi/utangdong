@@ -7,6 +7,7 @@ use Filament\Resources\Pages\ViewRecord;
 use Filament\Actions;
 use Filament\Forms;
 use App\Models\Verification;
+use Filament\Notifications\Notification;
 use App\Models\Borrower;
 
 class ViewUser extends ViewRecord
@@ -46,6 +47,10 @@ class ViewUser extends ViewRecord
                             'message' => 'Verifikasi berhasil.',
                         ]);
                     }
+                    Notification::make()
+                    ->title('Borrower telah berhasil di verifikasi')
+                    ->success()
+                    ->send();
                 }),
 
             Actions\Action::make('reject')
@@ -60,6 +65,10 @@ class ViewUser extends ViewRecord
                             'status' => 'rejected',
                         ]);
                     }
+                    Notification::make()
+                    ->title('Borrower telah ditolak')
+                    ->success()
+                    ->send();
                 }),
         ];
     }

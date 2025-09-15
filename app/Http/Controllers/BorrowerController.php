@@ -9,11 +9,12 @@ use App\Models\Verification;
 use App\Models\User;
 use App\Models\Offer;
 use App\Models\Settings;
+use SweetAlert2\Laravel\Swal;
 
 class BorrowerController extends Controller
 {
-    public function dashboard()
-    {
+    public function dashboard(){
+    
         $activeLoans = auth()->user()->loans->filter(fn($loan) => $loan->status === 'active');
 
         $totalActiveAmount = $activeLoans
@@ -50,7 +51,7 @@ class BorrowerController extends Controller
                         ->first();
         $verification = auth()->user()->status;
         if (!$gradeSetting || $verification !== "verified") {
-            abort(404, 'Grade setting not found for your credit score.');
+            return redirect()->route('dashboard');
         }
 
         return view('borrower-create', compact('gradeSetting'));
@@ -159,9 +160,9 @@ public function update($offerId)
     {
          $request->validate([
             'user_id' => 'required',
-            'nik' => 'required|string|max:255',
-            'slip_gaji' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:20',
+            'nik' => 'required|string|min:16|max:16',
+            'slip_gaji' => 'required|string|max:8',
+            'phone_number' => 'required|string|min:8|max:15',
         ]);
         $user = User::find($request->user_id);
         Verification::updateOrCreate(
@@ -175,8 +176,13 @@ public function update($offerId)
 
         $user->status = 'requested';
         $user->save();
-
-        return redirect()->route('dashboard')->with('message', 'Verification requested!');
+        Swal::fire([
+            'title' => 'Pengajuan telah dikirim!',
+            'text' => 'Proses verifikasi maksimal 48 jam.',
+            'icon' => 'success',
+            'confirmButtonText' => 'Oke saya mengerti'
+        ]);
+        return redirect()->route('dashboard');
     }
 
     public function disbursed(Request $request, $id)
@@ -187,7 +193,12 @@ public function update($offerId)
             'disbursed_amount' => $request->disbursed_amount,
             'disbursed_at' => now(),
         ]);
-
-        return redirect()->route('dashboard')->with('message', 'Verification requested!');
+        Swal::fire([
+            'title' => 'Pencairan dana telah disetujui',
+            'text' => 'Proses pencairan dana maksimal 24 jam.',
+            'icon' => 'success',
+            'confirmButtonText' => 'Oke saya mengerti'
+        ]);
+        return redirect()->route('dashboard');
     }
 }
