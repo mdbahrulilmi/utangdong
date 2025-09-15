@@ -91,12 +91,13 @@
                             Rp {{ number_format($totalCollected, 0, ',', '.') }}
                         </span>
                     </div>
-
-                    <button type="button" onclick="openWithdrawModal()"
-                        class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium 
-                            bg-green-600 hover:bg-green-700 text-white rounded-full shadow transition-all duration-200 hover:scale-105">
-                        💰 Withdraw Dana
-                    </button>
+                    @if($loan->status != 'active')
+                        <button type="button" onclick="openWithdrawModal()"
+                            class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium 
+                                bg-green-600 hover:bg-green-700 text-white rounded-full shadow transition-all duration-200 hover:scale-105">
+                            💰 Withdraw Dana
+                        </button>
+                    @endif
                 </div>
 
                 @if($loan->offers->count() > 0)

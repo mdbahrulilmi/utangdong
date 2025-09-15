@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Loan;
 use App\Models\Verification;
+use App\Models\Repayment;
 use App\Models\User;
 use App\Models\Offer;
 use App\Models\Settings;
@@ -193,6 +194,17 @@ public function update($offerId)
             'disbursed_amount' => $request->disbursed_amount,
             'disbursed_at' => now(),
         ]);
+
+        $dueAmount = $loan->offers->sum('repayment_amount')/$loan->tenor;
+        for($i = 0; $i<$loan->tenor; $i++){
+            Repayment::create([
+                'loan_id' => $loan->id,
+                'installment_no'=> $i+1,
+                'due_amount'=> $dueAmount,
+                'due_date' => now()->addMonth($i + 1)
+    
+            ]);
+        }
         Swal::fire([
             'title' => 'Pencairan dana telah disetujui',
             'text' => 'Proses pencairan dana maksimal 24 jam.',
@@ -201,4 +213,17 @@ public function update($offerId)
         ]);
         return redirect()->route('dashboard');
     }
+
+    public function repayment()
+{
+    $loanIds = auth()->user()
+        ->loans()
+        ->where('status', 'active')
+        ->pluck('id');
+
+    $repayments = Repayment::whereIn('loan_id', $loanIds)->paginate(12);
+
+    return view('borrower-repayment', compact('repayments'));
+}
+
 }

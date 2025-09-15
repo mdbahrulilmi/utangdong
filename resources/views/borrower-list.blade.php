@@ -3,19 +3,6 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-zinc-900 shadow-sm sm:rounded-lg p-6">
                 <h2 class="text-lg font-semibold mb-4">Riwayat Pinjaman</h2>
-
-                @if(session('success'))
-                    <div class="mb-4 p-3 rounded bg-green-100 text-green-800">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if(session('error'))
-                    <div class="mb-4 p-3 rounded bg-red-100 text-red-800">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
                 <div class="overflow-x-auto">
                     <table class="min-w-full text-sm text-left border border-gray-200 dark:border-zinc-700">
                         <thead class="bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-zinc-300">

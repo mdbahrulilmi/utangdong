@@ -31,7 +31,7 @@ Route::middleware(['auth',EnsureUserIsBorrower::class])->group(function () {
             Route::get('/show/{loan}', [BorrowerController::class, 'show'])->name('borrower.show');
             Route::post('/store', [BorrowerController::class, 'store'])->name('borrower.store');
             Route::patch('/disbursed/{id}', [BorrowerController::class, 'disbursed'])->name('borrower.disbursed');
-            Route::get('/repayment', [BorrowerController::class, 'index'])->name('borrower.repayment');
+            Route::get('/repayment', [BorrowerController::class, 'repayment'])->name('borrower.repayment');
         });
         Route::get('/verification/{id}', [BorrowerController::class, 'verify'])->name('borrower.verification');
         Route::post('/verification', [BorrowerController::class, 'submitVerification'])->name('borrower.verification.submit');
