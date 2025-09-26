@@ -12,7 +12,12 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    base: '/build/',  // penting untuk deploy ke Vercel
     server: {
         cors: true,
+    },
+    build: {
+        outDir: 'public/build',  // output ke folder public/build
+        emptyOutDir: true,
     },
 });
