@@ -68,6 +68,12 @@ class User extends Authenticatable
             ->implode('');
     }
 
+   public function isLender()
+   {
+    return $this->role === 'lender';
+    
+   }
+
     // Relationship
     public function loans()
     {

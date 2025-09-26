@@ -27,7 +27,8 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->authGuard('web')
+            ->brandName(fn () => auth('web')->user()?->isLender() ? 'Lender Dashboard' : 'Admin Dashboard')
             ->colors([
                 'primary' => Color::Amber,
             ])
