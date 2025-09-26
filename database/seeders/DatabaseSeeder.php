@@ -17,28 +17,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
         User::factory()->create([
             'name' => 'Admin Utang Dong',
             'username' => 'admin',
-            'email' => 'a@a',
-            'password' => '1',
+            'email' => 'admin@utangdong.com',
+            'password' => 'admin',
             'role'=> 'admin'
-        ]);
-        User::factory()->create([
-            'name' => 'Borrower1',
-            'username' => 'Borrower1',
-            'email' => 'b@1',
-            'password' => '1',
-            'role'=> 'borrower',
-        ]);
-        User::factory()->create([
-            'name' => 'Borrower2',
-            'username' => 'Borrower2',
-            'email' => 'b@2',
-            'password' => '2',
-            'role'=> 'borrower',
         ]);
 
         DB::table('settings')->insert([
